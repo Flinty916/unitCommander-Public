@@ -1,4 +1,3 @@
-**
 ![enter image description here](https://flintsdesigns.co.uk/IMG/UC_Logo.png)
 ## Unit Commander Public Repository
 
