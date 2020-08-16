@@ -1,0 +1,363 @@
+body {
+    background: #d6dbdf;
+    font-family: 'Mulish', sans-serif;
+    overflow-x: hidden;
+}
+
+.navbar {
+    padding: 30px;
+    border-bottom: 3px #f0a500 solid;
+    background: #1c1e20;
+}
+
+a {
+    border-bottom: 1px solid transparent;
+    transition: 0.3s ease;
+    color: inherit;
+}
+
+a:hover {
+    border-bottom: 1px solid #f0a500;
+    color: rgba(255, 255, 255, .75);
+    text-decoration: none;
+}
+
+.navbar-toggler {
+    border-color: transparent !important;
+}
+
+.section {
+    background: #e2e6e9;
+    padding: 15px;
+    color: #3f3f3f;
+    border-radius: 3px;
+}
+
+.section a:hover {
+    color: initial;
+}
+
+.section-container-o {
+    width: 90%;
+    margin: auto;
+    margin-top: 5vh;
+    min-height: 74vh;
+}
+
+.section-header {
+    background-color: #222222;
+    color: #e2f0fb;
+    text-align: center;
+    border-bottom: 2px solid #f0a500;
+    padding: 5px 8px;
+    margin-bottom: 1rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+hr {
+    border-top: 1px solid #f0a500;
+}
+
+.hr-slim {
+    border-top: 1px solid #a5a5a5 !important;
+}
+
+.btn:hover {
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(57, 57, 57, 0.75);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(57, 57, 57, 0.75);
+    box-shadow: 0px 0px 15px 0px rgba(57, 57, 57, 0.75);
+}
+
+.card {
+    border: none;
+    padding: 10px;
+    background: #d6dbdf;
+}
+
+.card-table {
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px #ccc solid;
+    margin-top: .25rem;
+}
+
+.social-link {
+    font-size: 3rem;
+    border-bottom: none;
+}
+
+.social-link:hover {
+    border-bottom: none;
+    color: #f0a500;
+}
+
+.footer {
+    width: 100%;
+    background-image: none;
+    background-repeat: repeat;
+    background-attachment: scroll;
+    background-position: 0% 0%;
+    bottom: 0pt;
+    left: 0pt;
+    background-color: #1c1e20;
+    color: rgba(255, 255, 255, .5);
+    padding: 5px;
+    border-top: 3px #f0a500 solid;
+}
+
+.footer p {
+    margin: 1rem;
+}
+
+.footer_contents {
+    width: 100%;
+    margin: auto;
+}
+
+.avatar-thumb {
+    max-width: 128px;
+}
+
+.records {
+    max-height: 30vh;
+    overflow-y: scroll;
+}
+
+.modal-content {
+    background: #e2e6e9;
+    color: #3f3f3f;
+    border-radius: 2px;
+}
+
+.modal-header {
+    border-bottom: 2px solid #f0a500;
+}
+
+.form-main input[type=text],
+.form-main input[type=email],
+.form-main input[type=file],
+.form-main input[type=color],
+.form-main input[type=password],
+.form-main input[type=number],
+.form-main input[type=date],
+.form-main input[type=time],
+.form-main textarea,
+.form-main select {
+    width: 100% !important;
+    border-radius: 3px !important;
+    background: #c8d0d3 !important;
+    color: #404141 !important;
+    outline: none !important;
+    padding: 15px !important;
+    margin-top: 15px !important;
+    border: 1px transparent solid !important;
+    height: unset !important;
+}
+
+.form-main input[type=text]:focus,
+.form-main input[type=email]:focus,
+.form-main input[type=file]:focus,
+.form-main input[type=color]:focus,
+.form-main input[type=password]:focus,
+.form-main input[type=number]:focus,
+.form-main input[type=date]:focus,
+.form-main input[type=time]:focus,
+.form-main textarea:focus,
+.form-main select:focus {
+    border: 1px #f0a500 solid !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.form-main input[type=color] {
+    height: 50px !important;
+}
+
+.badge-pill a {
+    border: none;
+    color: inherit;
+}
+
+.badge-pill a:hover {
+    border: none;
+    color: inherit;
+}
+
+.pagination {
+    justify-content: center;
+}
+
+.pagination .page-item.active .page-link {
+    color: #e0e0e0;
+    background-color: #585b5f;
+    border-color: transparent;
+}
+
+.pagination .page-item .page-link {
+    color: inherit;
+}
+
+.event-image {
+    max-width: 100%;
+    border-radius: 3px;
+}
+
+/*ORBAT*/
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.container {
+    margin-left: 0 auto;
+    margin-right: 0 auto;
+}
+
+.treecontainer p {
+    margin: 0;
+}
+
+.treecontainer form input[type=submit] {
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.treecontainer form input[type=submit]:focus {
+    border: none;
+    outline: none;
+}
+
+
+.treecentre {
+    display: block;
+    margin: 15 auto;
+    padding: 15 auto;
+}
+
+.tree ul {
+    padding-top: 20px;
+    position: relative;
+    transition: all 0.0s;
+    display: flex;
+    justify-content: center;
+    -webkit-transition: all 0.0s;
+    -moz-transition: all 0.0s;
+}
+
+.tree li {
+    text-align: center;
+    list-style-type: none;
+    position: relative;
+    padding: 20px 0.4vw 5px;
+    transition: all 0s;
+    -webkit-transition: all 0s;
+    -moz-transition: all 0s;
+    width: 100%;
+}
+
+.tree li::before,
+.tree li::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 50%;
+    border-top: 1px solid #959595;
+    width: 50%;
+    height: 20px;
+}
+
+.tree li::after {
+    right: auto;
+    left: 50%;
+    border-left: 1px solid #959595;
+}
+
+
+.tree li:only-child::after,
+.tree li:only-child::before {
+    display: none;
+}
+
+
+.tree li:only-child {
+    padding-top: 0;
+}
+
+
+.tree li:first-child::before,
+.tree li:last-child::after {
+    border: 0 none;
+}
+
+
+.tree li:last-child::before {
+    border-right: 1px solid #959595;
+    border-radius: 0 5px 0 0;
+    -webkit-border-radius: 0 5px 0 0;
+    -moz-border-radius: 0 5px 0 0;
+}
+
+.tree li:first-child::after {
+    border-radius: 5px 0 0 0;
+    -webkit-border-radius: 5px 0 0 0;
+    -moz-border-radius: 5px 0 0 0;
+}
+
+
+.tree ul ul::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    border-left: 1px solid #959595;
+    width: 0;
+    height: 20px;
+}
+
+.cell {
+    border: 1px solid #959595;
+    padding: 5px 0.5vw;
+    text-decoration: none;
+    font-size: 16px;
+    display: inline-block;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    transition: all 0.0s;
+    -webkit-transition: all 0.0s;
+    -moz-transition: all 0.0s;
+}
+
+.name {
+    font-size: 16px;
+    color: inherit;
+}
+
+.leader {
+    border-bottom: 1px #9b9b9b dashed;
+}
+
+#additional-elements-orbat {
+    display: none;
+}
+
+.tree li a:hover + ul li::after,
+.tree li a:hover + ul li::before,
+.tree li a:hover + ul::before,
+.tree li a:hover + ul ul::before {
+    border-color: #111;
+}
+
+#orbat-user {
+    padding: 10px;
+}
+
+#title {
+    font-size: 18px;
+}
