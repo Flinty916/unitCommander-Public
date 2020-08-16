@@ -1,10 +1,10 @@
 {
-    "slug": "default",
-    "name": "Unit Commander",
+    "slug": "example",
+    "name": "Example Unit Commander Theme",
     "author": "Flint's Designs",
     "email": "me@flintsdesigns.co.uk",
-    "description": "This is the Standard Unit Commander Theme",
-    "web": "www.flintsdesigns.co.uk",
+    "description": "This is the Example Unit Commander Theme",
+    "web": "https://flintsdesigns.co.uk",
     "license": "MIT",
     "version": "1.0"
 }
