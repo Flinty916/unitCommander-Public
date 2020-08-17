@@ -50,10 +50,10 @@ This document aims to outline the steps required to create a custom theme for th
   # Data Available in Templates
   
  *dashboard.blade.php*
-  - $events
-   - Type: Array of Objects
-   - Contains: Upcoming Events
-   - Example: 
+  1. $events
+    1. Type: Array of Objects
+    1. Contains: Upcoming Events
+    1. Example: 
   ```            @forelse($events as $event)
                         <div class="col-lg-6">
                             <div class="card-table">
