@@ -54,7 +54,7 @@ This document aims to outline the steps required to create a custom theme for th
      - Type: Array of Objects
      - Contains: Upcoming Events
      - Example: 
-```
+```html
                     @forelse($events as $event)
                         <div class="col-lg-6">
                             <div class="card-table">
