@@ -53,17 +53,17 @@ This document aims to outline the steps required to create a custom theme for th
   1. $events
      - Type: Array of Objects
          - Object Sample: 
-         ```php 
-    "id" => 1
-    "name" => "Operation Treadstone"
-    "description" => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru"
-    "image" => "/IMG/Uploads/20181210194805_1.jpg"
-    "date" => "2020-12-25 00:00:00"
-    "time" => "19:30"
-    "map" => "Stratis"
-    "briefing_id" => null
-    "created_at" => "2020-07-16 18:44:41"
-    "updated_at" => "2020-08-11 20:25:10"
+         ```php
+             "id" => 1
+             "name" => "Operation Treadstone"
+             "description" => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru"
+             "image" => "/IMG/Uploads/20181210194805_1.jpg"
+             "date" => "2020-12-25 00:00:00"
+             "time" => "19:30"
+             "map" => "Stratis"
+             "briefing_id" => null
+             "created_at" => "2020-07-16 18:44:41"
+             "updated_at" => "2020-08-11 20:25:10"
          ```
      - Contains: Upcoming Events
      - Example: 
