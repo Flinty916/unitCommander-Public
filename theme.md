@@ -54,30 +54,31 @@ This document aims to outline the steps required to create a custom theme for th
      - Type: Array of Objects
      - Contains: Upcoming Events
      - Example: 
-```            @forelse($events as $event)
-                  <div class="col-lg-6">
-                      <div class="card-table">
-                          <div class="row">
-                              <div class="col-lg-12">
-                                  <h3>{{ $event->name }}</h3>
-                              </div>
-                              <div class="col">
-                                  <p>{{ $event->description }}</p>
-                              </div>
-                          </div>
-                          <div class="row">
-                              <div class="col">
-                                  <a href="/events/{{$event->id}}" class="btn btn-outline-primary btn-block">View
-                                      Event Details</a>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              @empty
-                  <div class="col">
-                      <center>
-                          <p>No Events Available.</p>
-                      </center>
-                  </div>
-              @endforelse
-                    ```
+```
+                    @forelse($events as $event)
+                        <div class="col-lg-6">
+                            <div class="card-table">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h3>{{ $event->name }}</h3>
+                                    </div>
+                                    <div class="col">
+                                        <p>{{ $event->description }}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <a href="/events/{{$event->id}}" class="btn btn-outline-primary btn-block">View
+                                            Event Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="col">
+                            <center>
+                                <p>No Events Available.</p>
+                            </center>
+                        </div>
+                    @endforelse
+```
