@@ -61,8 +61,41 @@ This is the most critical model, and includes ALL the relationships required for
          - Includes attendance Status ID: status_id
  - custom_fields(): Returns all custom fields the user has been assigned, along with values
      - Array of UserField::class()
+ - logs(): Returns the user's service record details
+     - Array of Logs::class()
+     
+ 
+ ***Rank Model***
+*Model Data Return:*
+```php 
+"id" => 2
+"name" => "Corporal"
+"image" => "<image link>"
+"description" => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru"
+"created_at" => "2020-07-13 12:48:06"
+"updated_at" => "2020-08-03 22:25:31"
+```
 
+*Relationsips*
+ - users(): Returns all users who have the rank
+     - Array of User::class()
+     
+***Award Model***
+*Model Data Return:*
+```php 
+"id" => 2
+"name" => "Silver Star"
+"image" => "<image link>"
+"description" => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru"
+"created_at" => "2020-08-04 13:17:42"
+"updated_at" => "2020-08-04 13:17:51"
+```
 
+*Relationships*
+ - users(): Returns all users who have the rank
+     - Array of User::class()
+     
+     
  # What the Example Files Include
  The example files include everything required for the Default Unit Commander theme.
  
