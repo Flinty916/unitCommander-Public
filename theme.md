@@ -22,6 +22,7 @@ This document aims to outline the steps required to create a custom theme for th
 
 
 # Models
+
 Unit Commander uses the models for accessing information. This means, that when you access an object in a template, you're not only accessing the data, but you also have access to a series of functions that will make life easier. A lot of these functions are what we call "Relationships" and can be used to access related information. For example, the User model has a relationship called "awards" which will return an array of award objects, and vice versa. Below, I will outline the most common models you will encounter, and list their relationships/functions
 
 
