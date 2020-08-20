@@ -6,6 +6,7 @@ This document aims to outline the steps required to create a custom theme for th
 
 # Contents
  - Essential Information
+ - Models
  - What the Example Files include
  - Data available in templates
  - Common Issues
@@ -18,6 +19,47 @@ This document aims to outline the steps required to create a custom theme for th
  The Unit Commander Application uses the Blade Template Engine (from Laravel), which means that you have access to certain backend elements in the template files, for permissions, rendering data and much more. In the example files, you will notice a directory called "layouts", which contains a file named "layout.blade.php", this is where the main skeleton of your theme will go. It contains the <head> element, navigation system, footer and any scripts you need to load. In this file, you will notice the @content() variable, which is used to render in the individual theme files (detailed later). 
   
  Now, onto the "views" directory. This is where the bulk of your theme will be stored. You'll notice a set of predefined directories and files. It is imperative that these file names and directory names ARE NOT changed, under any circumstances. Unit Commander is programmed to search for these exact locations, and removing them would create large errors. 
+
+
+# Models
+Unit Commander uses the models for accessing information. This means, that when you access an object in a template, you're not only accessing the data, but you also have access to a series of functions that will make life easier. A lot of these functions are what we call "Relationships" and can be used to access related information. For example, the User model has a relationship called "awards" which will return an array of award objects, and vice versa. Below, I will outline the most common models you will encounter, and list their relationships/functions
+
+
+***User Model***
+This is the most critical model, and includes ALL the relationships required for Unit Commander Profiles. 
+*Model Data Return:*
+```php
+    "id" => 1
+    "steam64" => "76561198122454585"
+    "nickname" => "Flinty"
+    "avatar" => "<full_avatar_link>"
+    "profile_url" => "<profile_url>"
+    "name" => "L. Flint"
+    "email" => "<email>"
+    "rank_id" => null
+    "email_verified_at" => null //Unused, deprecated in upcoming update
+    "remember_token" => "<remember_token>" //Do not ever print this
+    "created_at" => "2020-07-12 12:34:14"
+    "updated_at" => "2020-08-03 18:31:20"
+```
+*Relationships*
+ - units(): Returns all Units the user is a member of
+     - Array of Unit::class()
+ - rank(): Returns associated rank details
+     - Rank::class()
+ - awards(): Returns all Awards associated with the user
+     - Array of Award::class()
+ - trainings(): Returns all Training Accomplishments associated with the user
+     - Array of Training::class()
+ - positions(): Returns all Positions associated with the user
+     - Array of Position::class()
+ - roles(): Returns all User Groups/Roles the user belongs to, i.e. Administrator
+     - Array of Role::class()
+ - events(): Returns all events the user has registered attendance for
+     - Array of Event::class()
+         - Includes attendance Status ID: status_id
+ - custom_fields(): Returns all custom fields the user has been assigned, along with values
+     - Array of UserField::class()
 
 
  # What the Example Files Include
