@@ -6,18 +6,24 @@
             </div>
         @endforeach
         <h1>{{ $rank->name }}</h1>
+            <h4>{{ $rank->prefix }}</h4>
         <hr/>
         <div class="row">
             <div class="col-lg-6 col-sm-12 my-auto">
                 <p>{{ $rank->description }}</p>
                 @can('edit_ranks')
-                    <form method="POST" action="ranks/{{$rank->id}}">
+                    <form method="POST" action="/ranks/{{$rank->id}}">
                         @csrf
                         @method('DELETE')
                         <span class="btn btn-danger delete confirmation-form">Delete Rank</span>
                         <a data-toggle="modal" data-target="#editRank" class="btn-warning btn"
                            data-id="{{$rank->id}}" data-name="{{$rank->name}}"
-                           data-description="{{$rank->description}}" data-image="{{$rank->image}}">Edit Rank</a>
+                           data-description="{{$rank->description}}" data-image="{{$rank->image}}"
+                           data-prefix="{{$rank->prefix}}"
+                           @if($rank->group)
+                            data-group="{{$rank->group->id}}"
+                           @endif
+                           data-display="{{$rank->displayOrder}}">Edit Rank</a>
                     </form>
                 @endcan
             </div>
@@ -70,10 +76,23 @@
                     @method('PUT')
                     <input type="text" name="name" placeholder="Rank Name" autocomplete="no"
                            value="">
+                    <input type="text" placeholder="Rank Prefix" autocomplete="no" name="prefix"
+                           value="{{ old('prefix') }}">
                     <input type="text" name="image" placeholder="Rank Image" autocomplete="no"
                            value="">
                     <textarea name="description" rows="10" cols="5"
                     ></textarea>
+                    <select name="group_id">
+                        <option disabled selected>Rank Group</option>
+                        <option value="">No Group</option>
+                        @forelse(\App\RankGroup::all() as $group)
+                            <option value="{{$group->id}}">{{ $group->name }}</option>
+                        @empty
+                            <option disabled selected>No Groups Available.</option>
+                        @endforelse
+                    </select>
+                    <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
+                           value="{{ old('displayOrder') }}"><br /><br />
                     <input type="submit" class="btn btn-warning btn-block" value="Update Rank"><br/>
                 </form>
             </div>
@@ -87,10 +106,16 @@
         var rank_name = button.data('name')
         var rank_desc = button.data('description')
         var rank_img = button.data('image')
+        let prefix = button.data('prefix')
+        let group = button.data('group')
+        let display = button.data('display')
         var modal = $(this)
         modal.find('.modal-title').text('Edit Rank: ' + rank_name)
         modal.find('.modal-body input[name=name]').val(rank_name)
         modal.find('.modal-body input[name=image]').val(rank_img)
+        modal.find('.modal-body input[name=displayOrder]').val(display)
+        modal.find('.modal-body input[name=prefix]').val(prefix)
+        modal.find('.modal-body select').val(group)
         modal.find('.modal-body textarea').val(rank_desc)
         modal.find('.modal-body form').attr('action', '/ranks/' + rank_id)
     })

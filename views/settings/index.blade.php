@@ -7,6 +7,7 @@
         @endforeach
         <h1>
             Settings
+            <a href="/pages" class="btn btn-secondary float-md-right">Custom Pages</a>
         </h1>
         <hr />
         <div class="card">
@@ -68,7 +69,7 @@
         </div>
         <br />
         <div class="card">
-            <h2>Site Theme <span class="float-right btn btn-secondary" data-toggle="modal" data-target="#uploadTheme">Upload New Theme</span></h2>
+            <h2>Site Theme <span class="float-md-right btn btn-secondary" data-toggle="modal" data-target="#uploadTheme">Upload New Theme</span></h2>
             <p class="small text-secondary">Set the theme site users will see when they visit.</p>
             <hr />
             <form class="form-main w-100" method="POST" action="/settings/theme">

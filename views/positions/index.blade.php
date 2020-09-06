@@ -7,7 +7,7 @@
         @endforeach
         <h1>Positions
             @can('edit_positions')
-                <span class="float-right btn btn-primary" data-toggle="modal" data-target="#createPosition">Create Position</span>
+                <span class="float-md-right btn btn-primary" data-toggle="modal" data-target="#createPosition">Create Position</span>
             @endcan
         </h1>
         <hr/>
@@ -24,7 +24,7 @@
                         </div>
                         @can('edit_positions')
                             <hr class="hr-slim">
-                            <form method="POST" action="positions/{{$position->id}}">
+                            <form method="POST" action="/positions/{{$position->id}}">
                                 @csrf
                                 @method('DELETE')
                                 <span class="btn btn-danger delete confirmation-form">Delete Position</span>

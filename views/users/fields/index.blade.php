@@ -8,7 +8,7 @@
         <h1>
             Custom Profile Fields
             @can('edit_user_fields')
-                <span data-toggle="modal" data-target="#createField" class="btn btn-primary float-right">Create Field</span>
+                <span data-toggle="modal" data-target="#createField" class="btn btn-primary float-md-right">Create Field</span>
             @endcan
         </h1>
         <hr />
@@ -57,10 +57,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" class="form-main" action="/users/fields/{{$field->id}}" enctype="multipart/form-data">
+                <form method="POST" class="form-main" action="/users/fields/" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <input type="text" name="name" placeholder="Field Name" autocomplete="no" class="@error('name') text-warning @enderror" value="{{$field->name}}">
+                    <input type="text" name="name" placeholder="Field Name" autocomplete="no" class="@error('name') text-warning @enderror" value="">
                     <select name="type">
                         <option selected disabled>Select Field Data Type</option>
                         <option value="text">Text</option>

@@ -10,21 +10,27 @@
         <div class="row">
             <div class="col-lg-6 col-sm-12 my-auto">
                 <p>{{ $unit->callsign }}</p>
-                <p>Led By: <a href="/profile/{{$unit->leader_id}}">
+                <p>Led By:
+                    @if(\App\User::find($unit->leader_id) !== null)
+                    <a href="/profile/{{$unit->leader_id}}">
                         @if(\App\User::find($unit->leader_id)->name)
                             {{ \App\User::find($unit->leader_id)->name }}
                         @else
                             {{ \App\User::find($unit->leader_id)->nickname }}
                         @endif
-                    </a></p>
+                    </a>
+                    @else
+                        No Leader Available.
+                    @endif
+                </p>
                 @can('edit_unit')
-                    <form method="POST" action="units/{{$unit->id}}">
+                    <form method="POST" action="/units/{{$unit->id}}">
                         @csrf
                         @method('DELETE')
                         <span class="btn btn-danger delete confirmation-form">Delete Unit</span>
                         <a data-toggle="modal" data-target="#editUnit" class="btn-warning btn"
                            data-id="{{$unit->id}}" data-name="{{$unit->name}}"
-                           data-callsign="{{$unit->callsign}}" data-leader="{{$unit->leader_id}}">Edit Unit</a>
+                           data-callsign="{{$unit->callsign}}" data-leader="@if($unit->leader_id){{$unit->leader_id}}@endif">Edit Unit</a>
                     </form>
                 @endcan
             </div>

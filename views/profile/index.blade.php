@@ -71,11 +71,11 @@
                 </div>
                 <center>
                     @if($profile->rank_id)
-                        <a href="/ranks/{{$profile->rank_id}}">
-                            <img src="{{ \App\Rank::getImage($profile->rank_id) }}" class="avatar-thumb">
+                        <a href="/ranks/{{$profile->rank->id}}">
+                            <img src="{{ $profile->rank->image }}" class="avatar-thumb">
                             <br/>
                             <br/>
-                            <h4>{{ \App\Rank::getName($profile->rank_id) }}</h4>
+                            <h4>{{ $profile->rank->name }}</h4>
                         </a>
                         @can('give_rank')
                             <form method="POST" action="/profile/{{$profile->id}}/remove/rank">

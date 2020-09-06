@@ -8,7 +8,7 @@
         <h1>
             Event Join Statuses
             @can('edit_events')
-                <span data-toggle="modal" data-target="#createStatus" class="btn btn-primary float-right">Create Status</span>
+                <span data-toggle="modal" data-target="#createStatus" class="btn btn-primary float-md-right">Create Status</span>
             @endcan
         </h1>
         <hr />

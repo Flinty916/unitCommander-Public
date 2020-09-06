@@ -11,7 +11,7 @@
             <div class="col-lg-6 col-sm-12 my-auto">
                 <p>{{ $position->description }}</p>
                 @can('edit_positions')
-                    <form method="POST" action="positions/{{$position->id}}">
+                    <form method="POST" action="/positions/{{$position->id}}">
                         @csrf
                         @method('DELETE')
                         <span class="btn btn-danger delete confirmation-form">Delete Position</span>

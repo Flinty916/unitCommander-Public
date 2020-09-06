@@ -7,7 +7,7 @@
         @endforeach
         <h1>Units
             @can('edit_unit')
-                <span class="float-right btn btn-primary" data-toggle="modal"
+                <span class="float-md-right btn btn-primary" data-toggle="modal"
                       data-target="#createUnit">Create Unit</span>
             @endcan
         </h1>
@@ -20,12 +20,20 @@
                         <hr class="hr-slim">
                         <div class="row">
                             <div class="col">
-                                <p class="text-justify">{{ $unit->callsign }}<span class="float-right">{{\App\User::find($unit->leader_id)->name}}</span></p>
+                                <p class="text-justify">{{ $unit->callsign }}
+                                    <span class="float-right">
+                                        @if(\App\User::find($unit->leader_id) !== null)
+                                            {{\App\User::find($unit->leader_id)->name}}
+                                        @else
+                                            No Leader
+                                        @endif
+                                    </span>
+                                </p>
                             </div>
                         </div>
                         @can('edit_unit')
                             <hr class="hr-slim">
-                            <form method="POST" action="units/{{$unit->id}}">
+                            <form method="POST" action="/units/{{$unit->id}}">
                                 @csrf
                                 @method('DELETE')
                                 <span class="btn btn-danger delete confirmation-form">Delete Unit</span>

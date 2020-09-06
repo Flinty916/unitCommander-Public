@@ -7,50 +7,91 @@
         @endforeach
         <h1>Awards
             @can('edit_awards')
-                <span class="float-right btn btn-primary" data-toggle="modal" data-target="#createAward">Create Award</span>
+                <span class="float-md-right btn btn-primary" data-toggle="modal" data-target="#createAward">Create Award</span>
+                <span class="float-md-right btn btn-primary mr-1" data-toggle="modal"
+                      data-target="#createCategory">Create Category</span>
             @endcan
         </h1>
         <hr/>
-        <div class="row">
-            @forelse($awards as $award)
-                <div class="col-lg-4 col-sm-12">
-                    <div class="card m-1">
-                        <h4><a href="/awards/{{$award->id}}">{{ $award->name }}</a></h4>
-                        <hr class="hr-slim">
-                        <div class="row">
-                            <div class="col-lg-3 col-sm-12 my-auto">
-                                <center>
-                                    <img src="{{ $award->image }}" class="avatar-thumb">
-                                </center>
+
+            @forelse($groups as $group)
+                @if($group->awards->count() > 0)
+                    <div class="section">
+                        <div class="section-header alt">
+                            {{ $group->name }}
+                            @can('edit_awards')
+                            <div class="float-md-right">
+                                <form method="POST" action="awards/group/{{$group->id}}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <span class="btn-sm btn-danger delete confirmation-form"><i class="fas fa-times-circle"></i></span>
+                                    <span data-toggle="modal" data-target="#editCategory" class="btn-sm btn-warning"
+                                          data-id="{{$group->id}}" data-name="{{$group->name}}" data-display="{{$group->displayOrder}}"
+                                    ><i class="far fa-edit"></i></span>
+                                </form>
                             </div>
-                            <div class="col">
-                                <p class="text-justify">{{ $award->description }}</p>
-                            </div>
+                            @endcan
                         </div>
-                        @can('edit_awards')
-                            <hr class="hr-slim">
-                            <form method="POST" action="awards/{{$award->id}}">
-                                @csrf
-                                @method('DELETE')
-                                <span class="btn btn-danger delete confirmation-form">Delete Award</span>
-                                <a data-toggle="modal" data-target="#editAward" class="btn-warning btn"
-                                   data-id="{{$award->id}}" data-name="{{$award->name}}"
-                                   data-description="{{$award->description}}" data-image="{{$award->image}}">Edit Award</a>
-                            </form>
-                        @endcan
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <th scope="col" class="w-25">Image</th>
+                                    <th scope="col" class="w-25">Name</th>
+                                    <th scope="col" class="w-25">Member Count</th>
+                                    <th scope="col" class="w-25">Information</th>
+                                </tr>
+                                @forelse($group->awards->sortBy('displayOrder') as $award)
+                                    <tr>
+                                        <td class="w-25" scope="row">
+                                            <img src="{{$award->image}}" style="max-width: 50px; max-height: 50px;">
+                                        </td>
+                                        <td class="align-middle w-25">{{ $award->name }}</td>
+                                        <td class="align-middle w-25">{{ $award->users->count() }}</td>
+                                        <td class="align-middle w-25"><a href="/awards/{{$award->id}}">Click Here</a></td>
+                                    </tr>
+                                @empty
+                                    <div class="col">
+                                        <center>
+                                            <h4>No Awards Available</h4>
+                                        </center>
+                                    </div>
+                                @endforelse
+                            </table>
+                        </div>
                     </div>
-                </div>
+                @endif
             @empty
-                <div class="col">
-                    <div class="card">
-                        <center>
-                            <h3>No Awards Available.</h3>
-                        </center>
+            @endforelse
+            @if($awards->where('group_id', null)->count() > 0)
+                <div class="section">
+                    <div class="section-header alt">
+                        Uncatalogued Awards
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr>
+                                <th scope="col" class="w-25">Image</th>
+                                <th scope="col" class="w-25">Name</th>
+                                <th scope="col" class="w-25">Member Count</th>
+                                <th scope="col" class="w-25">Information</th>
+                            </tr>
+                            @endif
+                            @foreach($awards->where('group_id', null) as $award)
+                                <tr>
+                                    <td class="w-25" scope="row">
+                                        <img src="{{$award->image}}" style="max-width: 50px; max-height: 50px;">
+                                    </td>
+                                    <td class="align-middle w-25">{{ $award->name }}</td>
+                                    <td class="align-middle w-25">{{ $award->users->count() }}</td>
+                                    <td class="align-middle w-25"><a href="/awards/{{$award->id}}">Click Here</a></td>
+                                </tr>
+                            @endforeach
+                        </table>
                     </div>
                 </div>
-            @endforelse
-        </div>
-        {{$awards->links()}}
+
+{{--     OLD       --}}
+        {{$groups->links()}}
     </div>
 </div>
 
@@ -74,7 +115,19 @@
                     <input type="text" placeholder="Award Image" autocomplete="no" name="image"
                            value="{{ old('image') }}">
                     <textarea placeholder="Award Description" name="description" rows="10"
-                              cols="5">{{ old('description') }}</textarea><br/>
+                              cols="5">{{ old('description') }}</textarea>
+                    <select name="group_id">
+                        <option disabled selected>Award Group</option>
+                        @forelse($groups as $group)
+                            <option value="{{$group->id}}">{{ $group->name }}</option>
+                        @empty
+                            <option disabled selected>No Groups Available.</option>
+                        @endforelse
+                    </select>
+                    <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
+                           value="{{ old('displayOrder') }}">
+                    <br/>
+                    <br/>
                     <input type="submit" value="Create Award" class="btn btn-success btn-block"><br/>
                 </form>
             </div>
@@ -123,5 +176,72 @@
         modal.find('.modal-body input[name=image]').val(award_img)
         modal.find('.modal-body textarea').val(award_desc)
         modal.find('.modal-body form').attr('action', '/awards/' + award_id)
+    })
+</script>
+
+{{--New Category--}}
+
+<div class="modal fade" id="createCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/ranks/group" class="form-main">
+                    @csrf
+                    <input type="text" placeholder="Category Name" autocomplete="no" name="name" value="{{ old('name') }}">
+                    <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
+                           value="{{ old('displayOrder') }}">
+                    <br/>
+                    <br/>
+                    <input type="submit" value="Create Category" class="btn btn-success btn-block"><br/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{--Edit Category--}}
+<div class="modal fade" id="editCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Category: </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" class="form-main" action="">
+                    @csrf
+                    @method('PUT')
+                    <input type="text" placeholder="Category Name" autocomplete="no" name="name" value="{{ old('name') }}">
+                    <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
+                           value="{{ old('displayOrder') }}">
+                    <br/>
+                    <br/>
+                    <input type="submit" value="Edit Category" class="btn btn-success btn-block"><br/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#editCategory').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget)
+        let id = button.data('id')
+        let name = button.data('name')
+        let display = button.data('display')
+        let modal = $(this)
+        modal.find('.modal-title').text('Edit Category: ' + name)
+        modal.find('.modal-body input[name=name]').val(name)
+        modal.find('.modal-body input[name=displayOrder]').val(display)
+        modal.find('.modal-body form').attr('action', '/ranks/group/' + id)
     })
 </script>

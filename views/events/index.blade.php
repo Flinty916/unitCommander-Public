@@ -14,9 +14,9 @@
             All Events
         @endif
             @can('edit_events')
-                <span data-toggle="modal" data-target="#createEvent" class="float-right btn btn-primary">Create Event</span>
+                <span data-toggle="modal" data-target="#createEvent" class="float-md-right btn btn-primary">Create Event</span>
             @endcan
-            <a href="/events/status" class="float-right btn btn-secondary mr-1">Attendance Status</a>
+            <a href="/events/status" class="float-md-right btn btn-secondary mr-1">Attendance Status</a>
         </h1>
         <hr />
         <div class="row">
@@ -53,6 +53,7 @@
                 </div>
             @endforelse
         </div>
+        {{ $events->links() }}
     </div>
 </div>
 

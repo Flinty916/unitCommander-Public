@@ -8,15 +8,15 @@
         <h1>
             Discord Servers
             @can('edit_discord')
-                <span class="btn btn-primary float-right" data-toggle="modal" data-target="#addServer">Add Discord Server</span>
+                <span class="btn btn-primary float-md-right" data-toggle="modal" data-target="#addServer">Add Discord Server</span>
             @endcan
-            <a href="" class="btn btn-info float-right mr-1">Get UC Bot</a>
+            <a href="" class="btn btn-info float-md-right mr-1">Get UC Bot</a>
         </h1>
         <hr>
         <div class="row">
             @forelse($discords as $discord)
                 <div class="col-lg-3 col-sm-12">
-                    <div class="card">
+                    <div class="card m-1">
                         @if($discord->getIcon())
                             <h3>
                                 <a href="/discord/{{$discord->id}}">{{ $discord->getName() }}</a>

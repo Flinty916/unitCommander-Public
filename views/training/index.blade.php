@@ -7,7 +7,7 @@
         @endforeach
         <h1>Training Accomplishments
             @can('edit_training')
-                <span class="float-right btn btn-primary" data-toggle="modal" data-target="#createTraining">Create Training</span>
+                <span class="float-md-right btn btn-primary" data-toggle="modal" data-target="#createTraining">Create Training</span>
             @endcan
         </h1>
         <hr/>
@@ -29,7 +29,7 @@
                         </div>
                         @can('edit_training')
                             <hr class="hr-slim">
-                            <form method="POST" action="awards/{{$t->id}}">
+                            <form method="POST" action="/training/{{$t->id}}">
                                 @csrf
                                 @method('DELETE')
                                 <span class="btn btn-danger delete confirmation-form">Delete Training</span>

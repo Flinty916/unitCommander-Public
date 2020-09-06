@@ -7,54 +7,91 @@
         @endforeach
         <h1>Ranks
             @can('edit_ranks')
-                <span class="float-right btn btn-primary" data-toggle="modal"
+                <span class="float-md-right btn btn-primary" data-toggle="modal"
                       data-target="#createRank">Create Rank</span>
+                <span class="float-md-right btn btn-primary mr-1" data-toggle="modal"
+                      data-target="#createCategory">Create Category</span>
             @endcan
         </h1>
         <hr/>
-        <div class="row">
-            @forelse($ranks as $rank)
-                <div class="col-lg-4 col-sm-12">
-                    <div class="card m-1">
-                        <h4><a href="/ranks/{{$rank->id}}">{{ $rank->name }}</a></h4>
-                        <hr class="hr-slim">
-                        <div class="row">
-                            <div class="col-lg-3 col-sm-12 my-auto">
+        @forelse($groups as $group)
+            @if($group->ranks->count() > 0)
+            <div class="section">
+                <div class="section-header alt">
+                    {{ $group->name }}
+                    @can('edit_ranks')
+                    <div class="float-md-right">
+                        <form method="POST" action="ranks/group/{{$group->id}}">
+                            @csrf
+                            @method('DELETE')
+                            <span class="btn-sm btn-danger delete confirmation-form"><i class="fas fa-times-circle"></i></span>
+                            <span data-toggle="modal" data-target="#editCategory" class="btn-sm btn-warning"
+                            data-id="{{$group->id}}" data-name="{{$group->name}}" data-display="{{$group->displayOrder}}"
+                            ><i class="far fa-edit"></i></span>
+                        </form>
+                    </div>
+                    @endcan
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th scope="col" class="w-25">Insignia</th>
+                            <th scope="col" class="w-25">Name</th>
+                            <th scope="col" class="w-25">Member Count</th>
+                            <th scope="col" class="w-25">Information</th>
+                        </tr>
+                        @forelse($group->ranks->sortBy('displayOrder') as $rank)
+                            <tr>
+                                <td class="w-25" scope="row">
+                                    <img src="{{$rank->image}}" style="max-width: 50px; max-height: 50px;">
+                                </td>
+                                <td class="align-middle w-25">{{ $rank->name }}</td>
+                                <td class="align-middle w-25">{{ $rank->users->count() }}</td>
+                                <td class="align-middle w-25"><a href="/ranks/{{$rank->id}}">Click Here</a></td>
+                            </tr>
+                        @empty
+                            <div class="col">
                                 <center>
-                                    <img src="{{ $rank->image }}" class="avatar-thumb">
+                                    <h4>No Ranks Available</h4>
                                 </center>
                             </div>
-                            <div class="col">
-                                <p class="text-justify">{{ $rank->description }}</p>
-                            </div>
-                        </div>
-                        @can('edit_ranks')
-                            <hr class="hr-slim">
-                            <form method="POST" action="ranks/{{$rank->id}}">
-                                @csrf
-                                @method('DELETE')
-                                <span class="btn btn-danger delete confirmation-form">Delete Rank</span>
-                                <a data-toggle="modal" data-target="#editRank" class="btn-warning btn"
-                                   data-id="{{$rank->id}}" data-name="{{$rank->name}}"
-                                   data-description="{{$rank->description}}" data-image="{{$rank->image}}">Edit Rank</a>
-                            </form>
-                        @endcan
-                    </div>
+                        @endforelse
+                    </table>
                 </div>
-            @empty
-                <div class="col">
-                    <div class="card">
-                        <center>
-                            <h3>No Ranks Available.</h3>
-                        </center>
-                    </div>
+            </div>
+            @endif
+        @empty
+        @endforelse
+        @if($ranks->where('group_id', null)->count() > 0)
+            <div class="section">
+                <div class="section-header alt">
+                    Uncatalogued Ranks
                 </div>
-            @endforelse
-        </div>
-        {{ $ranks->links() }}
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th scope="col" class="w-25">Insignia</th>
+                            <th scope="col" class="w-25">Name</th>
+                            <th scope="col" class="w-25">Member Count</th>
+                            <th scope="col" class="w-25">Information</th>
+                        </tr>
+                        @endif
+                        @foreach($ranks->where('group_id', null) as $rank)
+                            <tr>
+                                <td class="w-25" scope="row">
+                                    <img src="{{$rank->image}}" style="max-width: 50px; max-height: 50px;">
+                                </td>
+                                <td class="align-middle w-25">{{ $rank->name }}</td>
+                                <td class="align-middle w-25">{{ $rank->users->count() }}</td>
+                                <td class="align-middle w-25"><a href="/ranks/{{$rank->id}}">Click Here</a></td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
+            </div>
+        {{ $groups->links() }}
     </div>
 </div>
-
 {{--Modals--}}
 
 {{--New Rank--}}
@@ -72,10 +109,24 @@
                 <form method="POST" action="/ranks" class="form-main">
                     @csrf
                     <input type="text" placeholder="Rank Name" autocomplete="no" name="name" value="{{ old('name') }}">
+                    <input type="text" placeholder="Rank Prefix" autocomplete="no" name="prefix" value="{{ old('prefix') }}">
                     <input type="text" placeholder="Rank Image" autocomplete="no" name="image"
                            value="{{ old('image') }}">
                     <textarea placeholder="Rank Description" name="description" rows="10"
-                              cols="5">{{ old('description') }}</textarea><br/>
+                              cols="5">{{ old('description') }}</textarea>
+                    <select name="group_id">
+                        <option disabled selected>Rank Group</option>
+                        <option value="">No Group</option>
+                        @forelse($groups as $group)
+                            <option value="{{$group->id}}">{{ $group->name }}</option>
+                        @empty
+                            <option disabled selected>No Groups Available.</option>
+                        @endforelse
+                    </select>
+                    <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
+                           value="{{ old('displayOrder') }}">
+                    <br/>
+                    <br/>
                     <input type="submit" value="Create Rank" class="btn btn-success btn-block"><br/>
                 </form>
             </div>
@@ -83,14 +134,40 @@
     </div>
 </div>
 
-{{--Edit Rank--}}
+{{--New Category--}}
 
-<div class="modal fade" id="editRank" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="createCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Rank: </h5>
+                <h5 class="modal-title" id="exampleModalLabel">Create Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/ranks/group" class="form-main">
+                    @csrf
+                    <input type="text" placeholder="Category Name" autocomplete="no" name="name" value="{{ old('name') }}">
+                    <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
+                           value="{{ old('displayOrder') }}">
+                    <br/>
+                    <br/>
+                    <input type="submit" value="Create Category" class="btn btn-success btn-block"><br/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{--Edit Category--}}
+<div class="modal fade" id="editCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Category: </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -99,30 +176,27 @@
                 <form method="POST" class="form-main" action="">
                     @csrf
                     @method('PUT')
-                    <input type="text" name="name" placeholder="Rank Name" autocomplete="no"
-                           value="">
-                    <input type="text" name="image" placeholder="Rank Image" autocomplete="no"
-                           value="">
-                    <textarea name="description" rows="10" cols="5"
-                    ></textarea>
-                    <input type="submit" class="btn btn-warning btn-block" value="Update Rank"><br/>
+                    <input type="text" placeholder="Category Name" autocomplete="no" name="name" value="{{ old('name') }}">
+                    <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
+                           value="{{ old('displayOrder') }}">
+                    <br/>
+                    <br/>
+                    <input type="submit" value="Edit Category" class="btn btn-success btn-block"><br/>
                 </form>
             </div>
         </div>
     </div>
 </div>
 <script>
-    $('#editRank').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var rank_id = button.data('id')
-        var rank_name = button.data('name')
-        var rank_desc = button.data('description')
-        var rank_img = button.data('image')
-        var modal = $(this)
-        modal.find('.modal-title').text('Edit Rank: ' + rank_name)
-        modal.find('.modal-body input[name=name]').val(rank_name)
-        modal.find('.modal-body input[name=image]').val(rank_img)
-        modal.find('.modal-body textarea').val(rank_desc)
-        modal.find('.modal-body form').attr('action', '/ranks/' + rank_id)
+    $('#editCategory').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget)
+        let id = button.data('id')
+        let name = button.data('name')
+        let display = button.data('display')
+        let modal = $(this)
+        modal.find('.modal-title').text('Edit Category: ' + name)
+        modal.find('.modal-body input[name=name]').val(name)
+        modal.find('.modal-body input[name=displayOrder]').val(display)
+        modal.find('.modal-body form').attr('action', '/ranks/group/' + id)
     })
 </script>
