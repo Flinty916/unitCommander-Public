@@ -74,11 +74,16 @@ This is the most critical model, and includes ALL the relationships required for
 "description" => "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru"
 "created_at" => "2020-07-13 12:48:06"
 "updated_at" => "2020-08-03 22:25:31"
+"displayOrder" => "1" //Always an integer
+"group_id" => "1" //Raw group ID, can be accessed with group() function
+"prefix" => "Cpl"
 ```
 
 *Relationsips*
  - users(): Returns all users who have the rank
      - Array of User::class()
+ - group(): Returns the Group the rank belongs to
+     - Instance of RankGroup::class
      
 ***Award Model***
 *Model Data Return:*
