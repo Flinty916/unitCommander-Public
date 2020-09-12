@@ -17,6 +17,7 @@
                         <span class="btn btn-danger delete confirmation-form">Delete Training</span>
                         <a data-toggle="modal" data-target="#editTraining" class="btn-warning btn"
                            data-id="{{$training->id}}" data-name="{{$training->name}}"
+                           data-display="{{$training->displayOrder}}" @if($training->group_id)data-group="{{$training->group_id}}"@endif
                            data-description="{{$training->description}}" data-image="{{$training->image}}">Edit Training</a>
                     </form>
                 @endcan
@@ -74,6 +75,18 @@
                     <input type="text" name="image" placeholder="Training Image" autocomplete="no"
                            value="">
                     <textarea name="description" rows="10" cols="5"></textarea>
+                    <select name="group_id">
+                        <option disabled selected>Training Group</option>
+                        <option value="">No Group</option>
+                        @forelse(\App\TrainingGroup::all() as $group)
+                            <option value="{{$group->id}}">{{ $group->name }}</option>
+                        @empty
+                            <option disabled selected>No Groups Available.</option>
+                        @endforelse
+                    </select>
+                    <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
+                           value="{{ old('displayOrder') }}">
+                    <br/><br/>
                     <input type="submit" class="btn btn-warning btn-block" value="Update Training"><br/>
                 </form>
             </div>
@@ -87,11 +100,15 @@
         var training_name = button.data('name')
         var training_desc = button.data('description')
         var training_img = button.data('image')
+        let group = button.data('group')
+        let display = button.data('display')
         var modal = $(this)
         modal.find('.modal-title').text('Edit Rank: ' + training_name)
         modal.find('.modal-body input[name=name]').val(training_name)
         modal.find('.modal-body input[name=image]').val(training_img)
+        modal.find('.modal-body input[name=displayOrder]').val(display)
         modal.find('.modal-body textarea').val(training_desc)
+        modal.find('.modal-body select').val(group)
         modal.find('.modal-body form').attr('action', '/training/' + training_id)
     })
 </script>

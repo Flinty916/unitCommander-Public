@@ -16,61 +16,63 @@
         <hr/>
         @forelse($groups as $group)
             @if($group->ranks->count() > 0)
-            <div class="section">
-                <div class="section-header alt">
-                    {{ $group->name }}
-                    @can('edit_ranks')
-                    <div class="float-md-right">
-                        <form method="POST" action="ranks/group/{{$group->id}}">
-                            @csrf
-                            @method('DELETE')
-                            <span class="btn-sm btn-danger delete confirmation-form"><i class="fas fa-times-circle"></i></span>
-                            <span data-toggle="modal" data-target="#editCategory" class="btn-sm btn-warning"
-                            data-id="{{$group->id}}" data-name="{{$group->name}}" data-display="{{$group->displayOrder}}"
-                            ><i class="far fa-edit"></i></span>
-                        </form>
-                    </div>
-                    @endcan
-                </div>
-                <div class="table-responsive">
-                    <table class="table">
-                        <tr>
-                            <th scope="col" class="w-25">Insignia</th>
-                            <th scope="col" class="w-25">Name</th>
-                            <th scope="col" class="w-25">Member Count</th>
-                            <th scope="col" class="w-25">Information</th>
-                        </tr>
-                        @forelse($group->ranks->sortBy('displayOrder') as $rank)
-                            <tr>
-                                <td class="w-25" scope="row">
-                                    <img src="{{$rank->image}}" style="max-width: 50px; max-height: 50px;">
-                                </td>
-                                <td class="align-middle w-25">{{ $rank->name }}</td>
-                                <td class="align-middle w-25">{{ $rank->users->count() }}</td>
-                                <td class="align-middle w-25"><a href="/ranks/{{$rank->id}}">Click Here</a></td>
-                            </tr>
-                        @empty
-                            <div class="col">
-                                <center>
-                                    <h4>No Ranks Available</h4>
-                                </center>
+                <div class="section">
+                    <div class="section-header alt">
+                        {{ $group->name }}
+                        @can('edit_training')
+                            <div class="float-md-right">
+                                <form method="POST" action="/ranks/group/{{$group->id}}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <span class="btn-sm btn-danger delete confirmation-form"><i
+                                            class="fas fa-times-circle"></i></span>
+                                    <span data-toggle="modal" data-target="#editCategory" class="btn-sm btn-warning"
+                                          data-id="{{$group->id}}" data-name="{{$group->name}}"
+                                          data-display="{{$group->displayOrder}}"
+                                    ><i class="far fa-edit"></i></span>
+                                </form>
                             </div>
-                        @endforelse
-                    </table>
+                        @endcan
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr>
+                                <th scope="col" class="w-25">Image</th>
+                                <th scope="col" class="w-25">Name</th>
+                                <th scope="col" class="w-25">Member Count</th>
+                                <th scope="col" class="w-25">Information</th>
+                            </tr>
+                            @forelse($group->ranks->sortBy('displayOrder') as $rank)
+                                <tr>
+                                    <td class="w-25" scope="row">
+                                        <img src="{{$rank->image}}" style="max-width: 50px; max-height: 50px;">
+                                    </td>
+                                    <td class="align-middle w-25">{{ $rank->name }}</td>
+                                    <td class="align-middle w-25">{{ $rank->users->count() }}</td>
+                                    <td class="align-middle w-25"><a href="/ranks/{{$rank->id}}">Click Here</a></td>
+                                </tr>
+                            @empty
+                                <div class="col">
+                                    <center>
+                                        <h4>No Training Accomplishments Available</h4>
+                                    </center>
+                                </div>
+                            @endforelse
+                        </table>
+                    </div>
                 </div>
-            </div>
             @endif
         @empty
         @endforelse
         @if($ranks->where('group_id', null)->count() > 0)
             <div class="section">
                 <div class="section-header alt">
-                    Uncatalogued Ranks
+                    Uncatalogued Training
                 </div>
                 <div class="table-responsive">
                     <table class="table">
                         <tr>
-                            <th scope="col" class="w-25">Insignia</th>
+                            <th scope="col" class="w-25">Image</th>
                             <th scope="col" class="w-25">Name</th>
                             <th scope="col" class="w-25">Member Count</th>
                             <th scope="col" class="w-25">Information</th>
@@ -87,9 +89,9 @@
                             </tr>
                         @endforeach
                     </table>
+                    {{ $groups->links() }}
                 </div>
             </div>
-        {{ $groups->links() }}
     </div>
 </div>
 {{--Modals--}}
@@ -109,7 +111,8 @@
                 <form method="POST" action="/ranks" class="form-main">
                     @csrf
                     <input type="text" placeholder="Rank Name" autocomplete="no" name="name" value="{{ old('name') }}">
-                    <input type="text" placeholder="Rank Prefix" autocomplete="no" name="prefix" value="{{ old('prefix') }}">
+                    <input type="text" placeholder="Rank Prefix" autocomplete="no" name="prefix"
+                           value="{{ old('prefix') }}">
                     <input type="text" placeholder="Rank Image" autocomplete="no" name="image"
                            value="{{ old('image') }}">
                     <textarea placeholder="Rank Description" name="description" rows="10"
@@ -149,7 +152,8 @@
             <div class="modal-body">
                 <form method="POST" action="/ranks/group" class="form-main">
                     @csrf
-                    <input type="text" placeholder="Category Name" autocomplete="no" name="name" value="{{ old('name') }}">
+                    <input type="text" placeholder="Category Name" autocomplete="no" name="name"
+                           value="{{ old('name') }}">
                     <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
                            value="{{ old('displayOrder') }}">
                     <br/>
@@ -176,7 +180,8 @@
                 <form method="POST" class="form-main" action="">
                     @csrf
                     @method('PUT')
-                    <input type="text" placeholder="Category Name" autocomplete="no" name="name" value="{{ old('name') }}">
+                    <input type="text" placeholder="Category Name" autocomplete="no" name="name"
+                           value="{{ old('name') }}">
                     <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
                            value="{{ old('displayOrder') }}">
                     <br/>

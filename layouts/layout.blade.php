@@ -48,7 +48,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ url('users') }}">Players</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item dropdown">
                 <a class="nav-link" href="/ranks">Ranks</a>
             </li>
             <li class="nav-item">
@@ -62,6 +62,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/units">Units</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('/discord') }}">Discord</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/events">Events</a>
@@ -86,7 +89,7 @@
                     <p>You are not Logged In. <a href="{{ route('login') }}">Log in?</a></p>
                 @endguest
                 @auth
-                        <p>Welcome back {{ Auth::user()->nickname }}, <a href="/profile">Visit Profile?</a>. <a style="cursor:pointer;" id="logout-link">Logout?</a></p>
+                        <p>Welcome back {{ Auth::user()->nickname }}, <a href="/profile">Visit Profile?</a> <a style="cursor:pointer;" id="logout-link">Logout?</a></p>
                         <form action="{{ route('logout') }}" method="POST" class="pl-3" id="logout">
                             @csrf
                         </form>

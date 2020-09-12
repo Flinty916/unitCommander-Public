@@ -17,6 +17,7 @@
                         <span class="btn btn-danger delete confirmation-form">Delete Award</span>
                         <a data-toggle="modal" data-target="#editAward" class="btn-warning btn"
                            data-id="{{$award->id}}" data-name="{{$award->name}}"
+                           data-display="{{$award->displayOrder}}" @if($award->group)data-group="{{$award->group->id}}"@endif
                            data-description="{{$award->description}}" data-image="{{$award->image}}">Edit Award</a>
                     </form>
                 @endcan
@@ -75,6 +76,18 @@
                            value="">
                     <textarea name="description" rows="10" cols="5"
                     ></textarea>
+                    <select name="group_id">
+                        <option disabled selected>Award Group</option>
+                        <option value="">No Group</option>
+                        @forelse(\App\AwardGroup::all() as $group)
+                            <option value="{{$group->id}}">{{ $group->name }}</option>
+                        @empty
+                            <option disabled selected>No Groups Available.</option>
+                        @endforelse
+                    </select>
+                    <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
+                           value="{{ old('displayOrder') }}">
+                    <br/><br/>
                     <input type="submit" class="btn btn-warning btn-block" value="Update Award"><br/>
                 </form>
             </div>
@@ -88,11 +101,15 @@
         var award_name = button.data('name')
         var award_desc = button.data('description')
         var award_img = button.data('image')
+        let group = button.data('group')
+        let display = button.data('display')
         var modal = $(this)
         modal.find('.modal-title').text('Edit Rank: ' + award_name)
         modal.find('.modal-body input[name=name]').val(award_name)
         modal.find('.modal-body input[name=image]').val(award_img)
+        modal.find('.modal-body input[name=displayOrder]').val(display)
         modal.find('.modal-body textarea').val(award_desc)
+        modal.find('.modal-body select').val(group)
         modal.find('.modal-body form').attr('action', '/awards/' + award_id)
     })
 </script>

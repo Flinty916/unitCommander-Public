@@ -1,6 +1,6 @@
 body {
     background: #d6dbdf;
-    font-family: 'Mulish', sans-serif;
+    font-family: 'Mulish', sans-serif !important;
     overflow-x: hidden;
 }
 
@@ -20,6 +20,10 @@ a:hover {
     border-bottom: 1px solid #f0a500;
     color: rgba(255, 255, 255, .75);
     text-decoration: none;
+}
+
+ul {
+    padding-left: 40px;
 }
 
 .navbar-toggler {
@@ -53,6 +57,18 @@ a:hover {
     margin-bottom: 1rem;
     letter-spacing: 3px;
     text-transform: uppercase;
+}
+
+.section-header.alt {
+    padding: 15px;
+    text-align: left;
+    letter-spacing: initial;
+    background: linear-gradient(45deg, #222222, #495057);
+    border-bottom: 4px solid #f0a500;
+}
+
+.section-header.alt span {
+    text-transform: initial;
 }
 
 hr {
@@ -150,7 +166,7 @@ hr {
     color: #404141 !important;
     outline: none !important;
     padding: 15px !important;
-    margin-top: 15px !important;
+    margin-top: 15px;
     border: 1px transparent solid !important;
     height: unset !important;
 }
@@ -198,6 +214,11 @@ hr {
     color: inherit;
 }
 
+.note-editable {
+    max-height: 50vh !important;
+    height: 50vh !important;
+}
+
 .event-image {
     max-width: 100%;
     border-radius: 3px;
@@ -242,6 +263,7 @@ hr {
 
 .tree ul {
     padding-top: 20px;
+    padding-left: 0;
     position: relative;
     transition: all 0.0s;
     display: flex;

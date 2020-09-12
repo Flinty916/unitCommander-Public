@@ -9,58 +9,97 @@
             @can('edit_unit')
                 <span class="float-md-right btn btn-primary" data-toggle="modal"
                       data-target="#createUnit">Create Unit</span>
+                <span class="float-md-right btn btn-primary mr-1" data-toggle="modal"
+                      data-target="#createCategory">Create Category</span>
             @endcan
         </h1>
         <hr/>
-        <div class="row">
-            @forelse($units as $unit)
-                <div class="col-lg-4 col-sm-12">
-                    <div class="card m-1">
-                        <h4><a href="/units/{{$unit->id}}">{{ $unit->name }}</a></h4>
-                        <hr class="hr-slim">
-                        <div class="row">
-                            <div class="col">
-                                <p class="text-justify">{{ $unit->callsign }}
-                                    <span class="float-right">
-                                        @if(\App\User::find($unit->leader_id) !== null)
-                                            {{\App\User::find($unit->leader_id)->name}}
-                                        @else
-                                            No Leader
-                                        @endif
-                                    </span>
-                                </p>
-                            </div>
-                        </div>
+        @forelse($groups as $group)
+            @if($group->units->count() > 0)
+                <div class="section">
+                    <div class="section-header alt">
+                        {{ $group->name }}
                         @can('edit_unit')
-                            <hr class="hr-slim">
-                            <form method="POST" action="/units/{{$unit->id}}">
-                                @csrf
-                                @method('DELETE')
-                                <span class="btn btn-danger delete confirmation-form">Delete Unit</span>
-                                <a data-toggle="modal" data-target="#editUnit" class="btn-warning btn"
-                                   data-id="{{$unit->id}}" data-name="{{$unit->name}}"
-                                   data-callsign="{{$unit->callsign}}" data-leader="{{$unit->leader_id}}">Edit Unit</a>
-                            </form>
+                            <div class="float-md-right">
+                                <form method="POST" action="units/group/{{$group->id}}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <span class="btn-sm btn-danger delete confirmation-form"><i
+                                            class="fas fa-times-circle"></i></span>
+                                    <span data-toggle="modal" data-target="#editCategory" class="btn-sm btn-warning"
+                                          data-id="{{$group->id}}" data-name="{{$group->name}}"
+                                          data-display="{{$group->displayOrder}}"
+                                    ><i class="far fa-edit"></i></span>
+                                </form>
+                            </div>
                         @endcan
                     </div>
-                </div>
-            @empty
-                <div class="col">
-                    <div class="card">
-                        <center>
-                            <h3>No Units Available.</h3>
-                        </center>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr>
+                                <th scope="col" class="w-25">Unit Name/Callsign</th>
+                                <th scope="col" class="w-25">Leader</th>
+                                <th scope="col" class="w-25">Members</th>
+                                <th scope="col" class="w-25">Information</th>
+                            </tr>
+                            @foreach($group->units as $unit)
+                                <tr>
+                                    <th scope="row" class="w-25">{{ $unit->name }} ({{$unit->callsign}})</th>
+                                    <td class="w-25">
+                                        @if(\App\User::find($unit->leader_id))
+                                            {{\App\User::find($unit->leader_id)->name}}
+                                        @else
+                                            Not Available.
+                                        @endif
+                                    </td>
+                                    <td class="w-25">{{ $unit->users->count() }}</td>
+                                    <td class="w-25"><a href="/units/{{$unit->id}}">Click Here</a></td>
+                                </tr>
+                            @endforeach
+                        </table>
                     </div>
                 </div>
-            @endforelse
-        </div>
-        {{$units->links()}}
+            @endif
+        @empty
+        @endforelse
+        @if($units->where('group_id', null)->count() > 0)
+            <div class="section">
+                <div class="section-header alt">
+                    Uncatalogued Units
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th scope="col" class="w-25">Unit Name/Callsign</th>
+                            <th scope="col" class="w-25">Leader</th>
+                            <th scope="col" class="w-25">Members</th>
+                            <th scope="col" class="w-25">Information</th>
+                        </tr>
+                        @foreach($units->where('group_id', null) as $unit)
+                            <tr>
+                                <th scope="row" class="w-25">{{ $unit->name }} ({{$unit->callsign}})</th>
+                                <td class="w-25">
+                                    @if(\App\User::find($unit->leader_id))
+                                        {{\App\User::find($unit->leader_id)->name}}
+                                    @else
+                                        Not Available.
+                                    @endif
+                                </td>
+                                <td class="w-25">{{ $unit->users->count() }}</td>
+                                <td class="w-25"><a href="/units/{{$unit->id}}">Click Here</a></td>
+                            </tr>
+                        @endforeach
+                    </table>
+                </div>
+            </div>
+        @endif
+        {{$groups->links()}}
     </div>
 </div>
 
 {{--Modals--}}
 
-{{--New Rank--}}
+{{--New Unit--}}
 <div class="modal fade" id="createUnit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -74,30 +113,70 @@
             <div class="modal-body">
                 <form method="POST" action="/units" class="form-main">
                     @csrf
-                    <input type="text" placeholder="Unit Name" autocomplete="no" name="name" value="{{ old('name') }}">
-                    <input type="text" placeholder="Unit Callsign" autocomplete="no" name="callsign" value="{{ old('callsign') }}">
+                    <input type="text" placeholder="Unit Name" autocomplete="no" name="name"
+                           value="{{ old('name') }}">
+                    <input type="text" placeholder="Unit Callsign" autocomplete="no" name="callsign"
+                           value="{{ old('callsign') }}">
                     <select class="form-control" name="leader_id">
                         @forelse(\App\User::all() as $user)
                             <option value="{{ $user->id }}">{{ $user->name }} / {{ $user->nickname }}</option>
                         @empty
                             <option>No Users Available.</option>
                         @endforelse
-                    </select><br />
-                    <input type="submit" value="Create Unit" class="btn btn-success btn-block"><br />
+                    </select>
+                    <select name="group_id">
+                        <option disabled selected>Rank Group</option>
+                        <option value="">No Group</option>
+                        @forelse($groups as $group)
+                            <option value="{{$group->id}}">{{ $group->name }}</option>
+                        @empty
+                            <option disabled selected>No Groups Available.</option>
+                        @endforelse
+                    </select>
+                    <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
+                           value="{{ old('displayOrder') }}">
+                    <br/><br/>
+                    <input type="submit" value="Create Unit" class="btn btn-success btn-block"><br/>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-{{--Edit Rank--}}
+{{--New Category--}}
 
-<div class="modal fade" id="editUnit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="createCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Unit: </h5>
+                <h5 class="modal-title" id="exampleModalLabel">Create Category</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/units/group" class="form-main">
+                    @csrf
+                    <input type="text" placeholder="Category Name" autocomplete="no" name="name" value="{{ old('name') }}">
+                    <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
+                           value="{{ old('displayOrder') }}">
+                    <br/>
+                    <br/>
+                    <input type="submit" value="Create Category" class="btn btn-success btn-block"><br/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{--Edit Category--}}
+<div class="modal fade" id="editCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Category: </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -106,33 +185,27 @@
                 <form method="POST" class="form-main" action="">
                     @csrf
                     @method('PUT')
-                    <input type="text" name="name" placeholder="Unit Name" autocomplete="no" value="">
-                    <input type="text" name="callsign" placeholder="Unit Callsign" autocomplete="no" value="">
-                    <select class="form-control" name="leader_id">
-                        @forelse(\App\User::all() as $user)
-                            <option value="{{ $user->id }}">{{ $user->name }} / {{ $user->nickname }}</option>
-                        @empty
-                            <option>No Users Available.</option>
-                        @endforelse
-                    </select><br />
-                    <input type="submit" class="btn btn-warning btn-block" value="Update Unit"><br/>
+                    <input type="text" placeholder="Category Name" autocomplete="no" name="name" value="{{ old('name') }}">
+                    <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
+                           value="{{ old('displayOrder') }}">
+                    <br/>
+                    <br/>
+                    <input type="submit" value="Edit Category" class="btn btn-success btn-block"><br/>
                 </form>
             </div>
         </div>
     </div>
 </div>
 <script>
-    $('#editUnit').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var unit_id = button.data('id')
-        var unit_name = button.data('name')
-        var unit_callsign = button.data('callsign')
-        var unit_leader = button.data('leader')
-        var modal = $(this)
-        modal.find('.modal-title').text('Edit Unit: ' + unit_name)
-        modal.find('.modal-body input[name=name]').val(unit_name)
-        modal.find('.modal-body input[name=callsign]').val(unit_callsign)
-        modal.find('.modal-body select').val(unit_leader)
-        modal.find('.modal-body form').attr('action', '/units/' + unit_id)
+    $('#editCategory').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget)
+        let id = button.data('id')
+        let name = button.data('name')
+        let display = button.data('display')
+        let modal = $(this)
+        modal.find('.modal-title').text('Edit Category: ' + name)
+        modal.find('.modal-body input[name=name]').val(name)
+        modal.find('.modal-body input[name=displayOrder]').val(display)
+        modal.find('.modal-body form').attr('action', '/units/group/' + id)
     })
 </script>

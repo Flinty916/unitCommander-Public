@@ -10,7 +10,7 @@
             @can('edit_discord')
                 <span class="btn btn-primary float-md-right" data-toggle="modal" data-target="#addServer">Add Discord Server</span>
             @endcan
-            <a href="" class="btn btn-info float-md-right mr-1">Get UC Bot</a>
+            <a href="https://discord.com/oauth2/authorize?client_id=730738702103609349&scope=bot&permissions=8" class="btn btn-info float-md-right mr-1">Get UC Bot</a>
         </h1>
         <hr>
         <div class="row">

@@ -21,7 +21,7 @@
                             {{ $group->name }}
                             @can('edit_awards')
                             <div class="float-md-right">
-                                <form method="POST" action="awards/group/{{$group->id}}">
+                                <form method="POST" action="/awards/group/{{$group->id}}">
                                     @csrf
                                     @method('DELETE')
                                     <span class="btn-sm btn-danger delete confirmation-form"><i class="fas fa-times-circle"></i></span>
@@ -192,7 +192,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="/ranks/group" class="form-main">
+                <form method="POST" action="/awards/group" class="form-main">
                     @csrf
                     <input type="text" placeholder="Category Name" autocomplete="no" name="name" value="{{ old('name') }}">
                     <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
@@ -242,6 +242,6 @@
         modal.find('.modal-title').text('Edit Category: ' + name)
         modal.find('.modal-body input[name=name]').val(name)
         modal.find('.modal-body input[name=displayOrder]').val(display)
-        modal.find('.modal-body form').attr('action', '/ranks/group/' + id)
+        modal.find('.modal-body form').attr('action', '/awards/group/' + id)
     })
 </script>

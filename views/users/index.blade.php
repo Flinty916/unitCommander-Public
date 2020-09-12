@@ -13,7 +13,8 @@
             @can('edit_user_fields')
                 <a href="/users/fields" class="btn btn-secondary float-right mr-1">Custom Fields</a>
             @endcan
-        </h1><hr />
+        </h1>
+        <hr/>
         <form action="/users/search" method="POST">
             @csrf
             <div class="input-group">
@@ -34,6 +35,9 @@
                     <th scope="col">Nickname</th>
                     <th scope="col">Name</th>
                     <th scope="col">Profile</th>
+                    @can('delete_users')
+                        <th scope="col">Delete</th>
+                    @endcan
                 </tr>
                 @forelse($users as $user)
                     <tr>
@@ -47,13 +51,30 @@
                             @endif
                         </td>
                         <td><a href="/profile/{{$user->id}}">Click Here</a></td>
+                        @can('delete_users')
+                            @if(Auth::id() !== $user->id)
+                                <td>
+                                    <form method="POST" action="/users/{{$user->id}}">
+                                        @csrf @method('DELETE')
+                                        <span class="btn btn-danger confirmation-form">Delete</span>
+                                    </form>
+                                </td>
+                            @else
+                                <td>
+                                    <form method="POST" action="/users/{{$user->id}}">
+                                        @csrf @method('DELETE')
+                                        <span class="btn btn-secondary disabled">Delete</span>
+                                    </form>
+                                </td>
+                            @endif
+                        @endcan
                     </tr>
                 @empty
                     <p>No Users Available.</p>
                 @endforelse
             </table>
         </div>
-        <br />
+        <br/>
         {{ $users->links() }}
     </div>
 </div>

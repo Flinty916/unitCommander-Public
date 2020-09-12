@@ -30,7 +30,9 @@
                         <span class="btn btn-danger delete confirmation-form">Delete Unit</span>
                         <a data-toggle="modal" data-target="#editUnit" class="btn-warning btn"
                            data-id="{{$unit->id}}" data-name="{{$unit->name}}"
-                           data-callsign="{{$unit->callsign}}" data-leader="@if($unit->leader_id){{$unit->leader_id}}@endif">Edit Unit</a>
+                           data-callsign="{{$unit->callsign}}" data-leader="@if($unit->leader_id){{$unit->leader_id}}@endif"
+                           @if($unit->group)data-group="{{$unit->group->id}}"@endif data-display="{{$unit->displayOrder}}"
+                        >Edit Unit</a>
                     </form>
                 @endcan
             </div>
@@ -87,7 +89,18 @@
                         @empty
                             <option>No Users Available.</option>
                         @endforelse
-                    </select><br />
+                    </select>
+                    <select name="group_id">
+                        <option disabled selected>Unit Group</option>
+                        <option value="">No Group</option>
+                        @forelse(\App\UnitGroup::all() as $group)
+                            <option value="{{$group->id}}">{{ $group->name }}</option>
+                        @empty
+                            <option disabled selected>No Groups Available.</option>
+                        @endforelse
+                    </select>
+                    <input type="number" placeholder="Display Order" autocomplete="no" name="displayOrder"
+                           value="{{ old('displayOrder') }}"><br /><br />
                     <input type="submit" class="btn btn-warning btn-block" value="Update Unit"><br/>
                 </form>
             </div>
@@ -101,11 +114,15 @@
         var unit_name = button.data('name')
         var unit_callsign = button.data('callsign')
         var unit_leader = button.data('leader')
+        let group = button.data('group')
+        let display = button.data('display')
         var modal = $(this)
         modal.find('.modal-title').text('Edit Unit: ' + unit_name)
         modal.find('.modal-body input[name=name]').val(unit_name)
         modal.find('.modal-body input[name=callsign]').val(unit_callsign)
-        modal.find('.modal-body select').val(unit_leader)
+        modal.find('.modal-body input[name=displayOrder]').val(display)
+        modal.find('.modal-body select[name=leader_id]').val(unit_leader)
+        modal.find('.modal-body select[name=group_id]').val(group)
         modal.find('.modal-body form').attr('action', '/units/' + unit_id)
     })
 </script>
